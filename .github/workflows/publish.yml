@@ -121,7 +121,7 @@ jobs:
         run: |
           echo "$FIREBASE_JSON_B64" | base64 -d > firebase.json
           echo "$FIREBASE_OPTIONS_B64" | base64 -d > lib/firebase_options.dart
-          echo "$IOS_GSI_PLIST_B64" | base64 -d > ios/Runner/GoogleService-Info.plist
+          echo "$IOS_GSI_PLIST_B64" | base64 -d > swift/AppStore/GoogleService-Info.plist
 
       - name: Restore App Store Connect API key
         env:
