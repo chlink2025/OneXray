@@ -105,6 +105,11 @@ jobs:
       - name: Setup Flutter
         run: bash build_scripts/setup_flutter.sh
 
+      - name: Install FlutterFire CLI
+        run: |
+          dart pub global activate flutterfire_cli
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+
       - name: Install Python build deps
         run: pip install pyyaml requests typer
 
@@ -193,6 +198,11 @@ jobs:
       - name: Setup Flutter
         run: bash build_scripts/setup_flutter.sh
 
+      - name: Install FlutterFire CLI
+        run: |
+          dart pub global activate flutterfire_cli
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+
       - name: Install Python build deps
         run: pip install pyyaml requests typer
 
@@ -274,6 +284,11 @@ jobs:
 
       - name: Setup Flutter
         run: bash build_scripts/setup_flutter.sh
+
+      - name: Install FlutterFire CLI
+        run: |
+          dart pub global activate flutterfire_cli
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
 
       - name: Install Python build deps
         run: pip install pyyaml requests typer
