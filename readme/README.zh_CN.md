@@ -19,6 +19,7 @@
 | iOS      | iOS 15.0 及以上        | arm64                | ipa        | [App Store](https://apps.apple.com/us/app/onexray/id6745748773)                                                            |
 | iOS      | iOS 15.0 及以上        | arm64                | ipa        | [OneXray-ios.ipa](https://github.com/OneXray/OneXray/releases/latest/download/OneXray-ios.ipa)                             |
 | macOS    | macOS 12.0 及以上      | Apple silicon, Intel | pkg        | [Mac App Store](https://apps.apple.com/us/app/onexray/id6745748773)                                                        |
+| macOS    | macOS 12.0 及以上      | Apple silicon, Intel | zip        | [OneXray-macos-universal.zip](https://github.com/OneXray/OneXray/releases/latest/download/OneXray-macos-universal.zip)     |
 | Linux    | GLIBC >= 2.39          | x86_64               | deb        | [OneXray-linux-x86_64.deb](https://github.com/OneXray/OneXray/releases/latest/download/OneXray-linux-x86_64.deb)           |
 | Linux    | GLIBC >= 2.39          | x86_64               | zip        | [OneXray-linux-x86_64.zip](https://github.com/OneXray/OneXray/releases/latest/download/OneXray-linux-x86_64.zip)           |
 | Linux    | GLIBC >= 2.39          | arm64                | deb        | [OneXray-linux-aarch64.deb](https://github.com/OneXray/OneXray/releases/latest/download/OneXray-linux-aarch64.deb)         |
