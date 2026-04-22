@@ -3,10 +3,6 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    // START: FlutterFire Configuration
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    // END: FlutterFire Configuration
     id("kotlin-android")
     kotlin("android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -46,12 +42,6 @@ android {
         ndk {
             abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86_64")
         }
-
-        // AdMob APPLICATION_ID — read from env var at build time so the real id
-        // isn't committed to the repo. Falls back to Google's test App ID so a
-        // fresh clone without the env set can still build and run (with test ads).
-        manifestPlaceholders["admobAppId"] = System.getenv("ADMOB_APP_ID_ANDROID")
-            ?: "ca-app-pub-3940256099942544~3347511713"
     }
 
     signingConfigs {
