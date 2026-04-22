@@ -60,7 +60,7 @@ jobs:
       - name: Install Python build deps
         run: pip install pyyaml requests typer
 
-       - name: Restore keystore
+      - name: Restore keystore
         env:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
