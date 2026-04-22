@@ -98,7 +98,7 @@ jobs:
         run: |
           echo "$KEYSTORE_B64" | base64 -d > ./keystore.jks
           java -jar bundletool.jar build-apks \
-            --bundle=OneXray/build/app/outputs/bundle/release/app-release.aab \
+            --bundle=./build/app/outputs/bundle/release/app-release.aab \
             --output=app.apks \
             --ks=./keystore.jks \
             --ks-pass=pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
