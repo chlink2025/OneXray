@@ -1,0 +1,90 @@
+name: Publish Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GO_VERSION: "1.26.2"
+  PYTHON_VERSION: "3.12"
+  NDK_VERSION: r29
+  LIBXRAY_REF: main
+  BUILD_NUMBER: ${{ github.run_number }}
+
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: OneXray
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: OneXray
+
+      - uses: actions/checkout@v6
+        with:
+          repository: XTLS/libXray
+          ref: ${{ env.LIBXRAY_REF }}
+          path: libXray
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Flutter
+        run: bash build_scripts/setup_flutter.sh
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: ${{ env.NDK_VERSION }}
+          add-to-path: true
+
+      - name: Install Python build deps
+        run: pip install pyyaml requests typer
+
+       - name: Restore keystore
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          mkdir -p android/keystore
+          echo "$KEYSTORE_B64" | base64 -d > android/keystore/upload.jks
+          cat > android/keystore/keystore.properties <<EOF
+          storeFile=../keystore/upload.jks
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          EOF
+
+      - name: Install fastlane
+        run: sudo gem install fastlane --no-document
+
+      - name: Build & upload
+        run: python3 build_scripts/main.py OneXray android
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-universal
+          path: output/OneXray-android-universal*.apk
+          if-no-files-found: error
