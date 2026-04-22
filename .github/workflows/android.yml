@@ -82,9 +82,38 @@ jobs:
       - name: Build & upload
         run: python3 build_scripts/main.py OneXray android
 
+      - name: Get latest bundletool version and download
+        run: |
+          sudo apt update
+          sudo apt install jq openjdk-25-jdk -y
+          LATEST_TAG=$(curl -s https://api.github.com/repos/google/bundletool/releases/latest | jq -r '.tag_name')
+          echo "Latest bundletool version: $LATEST_TAG"
+          
+          # 下载对应版本的 jar 文件
+          wget -q "https://github.com/google/bundletool/releases/download/${LATEST_TAG}/bundletool-all-${LATEST_TAG}.jar" -O bundletool.jar
+
+      - name: Build APK Set from AAB
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > ./keystore.jks
+          java -jar bundletool.jar build-apks \
+            --bundle=OneXray/build/app/outputs/bundle/release/app-release.aab \
+            --output=app.apks \
+            --ks=./keystore.jks \
+            --ks-pass=pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
+            --ks-key-alias=${{ secrets.ANDROID_KEY_ALIAS }} \
+            --key-pass=pass:${{ secrets.ANDROID_KEY_PASSWORD }} \
+            --mode=universal
+      - name: Extract Universal APK
+        run: |
+          mkdir -p apks_out
+          unzip -q app.apks -d apks_out
+          # 复制通用 APK 到当前目录
+          cp apks_out/universal.apk ./my-app.apk
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
           name: android-universal
-          path: output/OneXray-android-universal*.apk
+          path: ./my-app.apk
           if-no-files-found: error
