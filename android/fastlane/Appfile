@@ -1,2 +1,2 @@
-json_key_file("./fastlane/playservice.json")
-package_name("net.yuandev.onexray")
+# To enable Google Play upload, add playservice.json to android/fastlane/
+# package_name("net.yuandev.onexray")

@@ -2,15 +2,14 @@ default_platform(:android)
 
 platform :android do
   lane :deploy do
-    upload_to_play_store(
-        aab: "../build/app/outputs/bundle/release/app-release.aab",
-        release_status: "draft",
-        track: "internal",
-        timeout: 1200,
-    )
-    download_universal_apk_from_google_play(
-        version_code: ##version_code##,
-        destination: "../../output/OneXray-android-universal.apk",
-    )
+    # upload_to_play_store requires Google Play service account JSON file
+    # To enable, add playservice.json to android/fastlane/ and uncomment below
+    #
+    # upload_to_play_store(
+    #     aab: "../build/app/outputs/bundle/release/app-release.aab",
+    #     release_status: "draft",
+    #     track: "internal",
+    #     timeout: 1200,
+    # )
   end
 end
